@@ -1,0 +1,11 @@
+<div class="login-form">
+  <%= form_tag('/login', method: 'post') do %>
+    <label for="username">Username:</label>
+    <input type="username" id="username" name="username" value="john" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" value ="doe" required>
+
+    <button type="submit" data-action="click->login#submitForm">Login</button>
+  <% end %>
+</div>

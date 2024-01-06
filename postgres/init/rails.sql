@@ -46,6 +46,49 @@ CREATE TABLE public.schema_migrations (
 ALTER TABLE public.schema_migrations OWNER TO rails;
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: rails
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    username character varying,
+    password_digest character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO rails;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: rails
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO rails;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rails
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
 -- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: rails
 --
 
@@ -59,7 +102,24 @@ environment	development	2024-01-06 08:44:47.778895	2024-01-06 08:44:47.778898
 --
 
 COPY public.schema_migrations (version) FROM stdin;
+20240106092335
 \.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: rails
+--
+
+COPY public.users (id, username, password_digest, created_at, updated_at) FROM stdin;
+1	john	$2a$12$u3xtOFJ8vVn4xOpO.G8SuOIBAMwEkopfa.P0VTHuqF8WehtSggrb.	2024-01-06 09:29:17.067257	2024-01-06 09:29:17.067257
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rails
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
@@ -76,6 +136,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
