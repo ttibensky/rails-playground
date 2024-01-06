@@ -27,6 +27,9 @@ docker compose exec rails rails db:seed
 
 # update simulus manifest after adding new controllers manually
 docker compose exec rails rails stimulus:manifest:update
+
+# test puppeteer crawler
+curl -H 'content-type: application/json' -d '{"url":"https://www.airbnb.com/h/roofdeckhottub"}' localhost:3001/reviews/airbnb
 ```
 
 There is a seed user that use can use to login:

@@ -3,28 +3,25 @@ services:
 
   rails:
     build: ./app
+    restart: always
     command: /var/www/app/entrypoint.sh
-    # command: tail -f /dev/null
     environment:
       - RAILS_ROOT=/var/www/app
       - RAILS_ENV=development
       - APP_DATABASE_PASSWORD=WRJjQ3VA
-      # - RAILS_LOG_TO_STDOUT=true
-      # - RACK_ENV=development
-      # - MALLOC_ARENA_MAX=2
-      # - RAILS_MAX_THREADS=1
-      # - RAILS_MAX_DB_CONNECTIONS=5
     volumes:
       - ./app:/var/www/app
       - ./app/bundle:/usr/local/bundle
     depends_on:
       - postgres
       - redis
+      - crawler
     ports:
       - 3000:3000
 
   postgres:
     image: postgres:16.1
+    restart: always
     environment:
       - POSTGRES_DB=rails
       - POSTGRES_USER=rails
@@ -37,8 +34,20 @@ services:
 
   redis:
     image: redis:7.2.3-alpine
+    restart: always
     volumes:
       - ./redis/data:/data
     ports:
       - 6379:6379
+  
+  crawler:
+    build: ./crawler
+    restart: always
+    command: npm run dev
+    user: root
+    volumes:
+        - ./crawler/app:/app
+    ports:
+      - 3001:3000
+
 
