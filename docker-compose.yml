@@ -9,15 +9,32 @@ services:
       - RAILS_ROOT=/var/www/app
       - RAILS_ENV=development
       - APP_DATABASE_PASSWORD=WRJjQ3VA
+      - RAILS_MAX_DB_CONNECTIONS=5
+      - REDIS_URL=redis://redis:6379/1
     volumes:
       - ./app:/var/www/app
       - ./app/bundle:/usr/local/bundle
     depends_on:
       - postgres
       - redis
-      - crawler
     ports:
       - 3000:3000
+
+  sidekiq:
+    build: ./app
+    command: /var/www/app/entrypoint-sidekiq.sh
+    environment:
+      - RAILS_ROOT=/var/www/app
+      - RAILS_ENV=development
+      - APP_DATABASE_PASSWORD=WRJjQ3VA
+      - RAILS_MAX_DB_CONNECTIONS=5
+      - REDIS_URL=redis://redis:6379/1
+    depends_on:
+      - postgres
+      - redis
+      - crawler
+    volumes_from:
+      - rails
 
   postgres:
     image: postgres:16.1

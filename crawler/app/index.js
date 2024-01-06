@@ -90,6 +90,8 @@ app.post("/reviews/airbnb", async (req, res) => {
     // await page.screenshot({ path: "test.png" });
 
     // extract reviews data
+    // @TODO there is an infinite scroll, we need to scroll to the very bottom to get all the reviews
+    // @TODO ignore reviews that we already have
     const authors = await page.$$eval(
       "[data-review-id] > div:nth-child(1) h3",
       (elements) => {
