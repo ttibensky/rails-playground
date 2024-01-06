@@ -35,6 +35,81 @@ CREATE TABLE public.ar_internal_metadata (
 ALTER TABLE public.ar_internal_metadata OWNER TO rails;
 
 --
+-- Name: listings; Type: TABLE; Schema: public; Owner: rails
+--
+
+CREATE TABLE public.listings (
+    id bigint NOT NULL,
+    title character varying,
+    url character varying NOT NULL,
+    user_id integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+ALTER TABLE public.listings OWNER TO rails;
+
+--
+-- Name: listings_id_seq; Type: SEQUENCE; Schema: public; Owner: rails
+--
+
+CREATE SEQUENCE public.listings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.listings_id_seq OWNER TO rails;
+
+--
+-- Name: listings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rails
+--
+
+ALTER SEQUENCE public.listings_id_seq OWNED BY public.listings.id;
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: rails
+--
+
+CREATE TABLE public.reviews (
+    id bigint NOT NULL,
+    text character varying,
+    stars integer NOT NULL,
+    author character varying NOT NULL,
+    listing_id integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+ALTER TABLE public.reviews OWNER TO rails;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: rails
+--
+
+CREATE SEQUENCE public.reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.reviews_id_seq OWNER TO rails;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rails
+--
+
+ALTER SEQUENCE public.reviews_id_seq OWNED BY public.reviews.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: rails
 --
 
@@ -83,6 +158,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: listings id; Type: DEFAULT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.listings ALTER COLUMN id SET DEFAULT nextval('public.listings_id_seq'::regclass);
+
+
+--
+-- Name: reviews id; Type: DEFAULT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.reviews ALTER COLUMN id SET DEFAULT nextval('public.reviews_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: rails
 --
 
@@ -99,11 +188,31 @@ environment	development	2024-01-06 10:25:33.10193	2024-01-06 10:25:33.101933
 
 
 --
+-- Data for Name: listings; Type: TABLE DATA; Schema: public; Owner: rails
+--
+
+COPY public.listings (id, title, url, user_id, created_at, updated_at) FROM stdin;
+1	🚙 Private Garage 🏙 Center City Roofdeck w 🔥Hot Tub	https://www.airbnb.com/h/roofdeckhottub	2	2024-01-06 13:13:22.319715	2024-01-06 13:13:22.319715
+\.
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: rails
+--
+
+COPY public.reviews (id, text, stars, author, listing_id, created_at, updated_at) FROM stdin;
+1	to improve the cleanliness,	3	Andrea Carolina	1	2024-01-06 13:13:22.33106	2024-01-06 13:13:22.33106
+2	Cory’s place is fantastic. The location is central to everything. Walkable to many restaurants and a very short drive from literally anything we wanted to do. The house itself is great. Tons of space and very comfortable. Our kids loved the oversized bunk beds. The roof deck is awesome and the hot tub is superb. Cory himself was a fabulous host, responding *immediately* whenever we had a question, and providing great reccos for local places to eat that we truly enjoyed. We would love to stay again and will recommend to our friends as well.	5	Andy	1	2024-01-06 13:13:22.334465	2024-01-06 13:13:22.334465
+\.
+
+
+--
 -- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: rails
 --
 
 COPY public.schema_migrations (version) FROM stdin;
 20240106092335
+20240106103639
 \.
 
 
@@ -112,15 +221,29 @@ COPY public.schema_migrations (version) FROM stdin;
 --
 
 COPY public.users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at) FROM stdin;
-1	john.doe@example.com	$2a$12$dYS55qr4XPDy7ENDx8BiL.vlR/UAr9AV5xDfIf6gvKmUJAkYRpMPK	\N	\N	\N
+2	john.doe@example.com	$2a$12$r7Ldm.fKylMExpjsgDewOurWZBUkBfbthtYZPjGhC0B6RKTDlIIQu	\N	\N	\N
 \.
+
+
+--
+-- Name: listings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rails
+--
+
+SELECT pg_catalog.setval('public.listings_id_seq', 1, true);
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rails
+--
+
+SELECT pg_catalog.setval('public.reviews_id_seq', 2, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rails
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
@@ -129,6 +252,22 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: listings listings_pkey; Type: CONSTRAINT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.listings
+    ADD CONSTRAINT listings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -159,6 +298,22 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: reviews fk_rails_60def33a58; Type: FK CONSTRAINT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_60def33a58 FOREIGN KEY (listing_id) REFERENCES public.listings(id);
+
+
+--
+-- Name: listings fk_rails_baa008bfd2; Type: FK CONSTRAINT; Schema: public; Owner: rails
+--
+
+ALTER TABLE ONLY public.listings
+    ADD CONSTRAINT fk_rails_baa008bfd2 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
