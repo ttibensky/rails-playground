@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   end
 
   namespace :app do
-    get 'listings', to: 'listings#index'
+    namespace :listings do
+      get '', action: 'index', as: ''
+      get ':id', action: 'show', as: 'show'
+    end
   end
 end

@@ -1,2 +1,7 @@
 <h1>Welcome to Rails Playground</h1>
-<p><%= link_to 'Sign in', :sign_in %> to continue.</p>
+
+<% if !!current_user %>
+    <p>Go to <%= link_to 'Your Listings', :app_listings %>.</p>
+<% else %>
+    <p><%= link_to 'Sign in', :sign_in %> to continue.</p>
+<% end %>

@@ -31,4 +31,6 @@ docker compose exec rails rails stimulus:manifest:update
 
 There is a seed user that use can use to login:
 - email: `john.doe@example.com`
-- password: `John_Doe_1!`
+- password: `john.doe@example.com`
+
+This user already has the test listing created, and all reviews synced.

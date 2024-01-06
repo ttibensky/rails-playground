@@ -1,1 +1,9 @@
-listings
+<h1>Your Listings</h1>
+
+<ul>
+<% @listings.each do |listing| %>
+    <li>
+        <%= link_to listing.title, app_listings_show_path(id: listing.id) %>
+    </li>
+<% end %>
+</ul>
