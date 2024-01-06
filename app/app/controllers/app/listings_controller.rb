@@ -11,7 +11,7 @@ module App
 
       # @TODO cache the metrics below and refresh them each day after we've got new reviews
       @metrics = { month: {}, year: {} }
-      @listing.reviews.each do |review|
+      (@listing.reviews || []).each do |review|
         month = review.created_at.strftime('%Y-%m')
         year = review.created_at.strftime('%Y')
 
