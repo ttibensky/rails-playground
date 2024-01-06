@@ -12,12 +12,13 @@ module App
     def show
       # @TODO move logic to a service
       @listing = Listing.find_by(id: params[:id], user: current_user)
+      raise ActionController::RoutingError.new('Not Found') unless !!@listing
 
       # @TODO cache the metrics below and refresh them each day after we've got new reviews
       # @TODO words rendering will have performance issues when the listing has a large number of reviews
       @metrics = { month: {}, year: {} }
       @words = {}
-      (@listing.reviews.order(created_at: :asc) || []).each do |review|
+      @listing.reviews.order(created_at: :asc).each do |review|
         month = review.created_at.strftime('%Y-%m')
         year = review.created_at.strftime('%Y')
 
