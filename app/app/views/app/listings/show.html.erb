@@ -1,5 +1,10 @@
 <h1><%= @listing.title %></h1>
-<p>If you just created this listing, give it a few seconds and refresh this page to load latest data.</p>
+
+<div data-controller="data">
+  <p>If you just created this listing, give it a few seconds and hit refresh button below to display the data</p>
+  <p>Sadly, this doesn't work. It seems, the latest Rails version has some issues with Stimulus, so this feature is not yet implemented.</p>
+  <button data-action="click->data#refresh">Refresh</button>
+</div>
 
 <div>
   <canvas id="month-chart" width="800" height="200"></canvas>
