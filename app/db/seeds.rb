@@ -12,8 +12,8 @@ User.destroy_all
 User.create!(
   [
     {
-      username: 'john',
-      password: 'doe'
+      email: 'john.doe@example.com',
+      password: 'John_Doe_1!'
     }
   ]
 )

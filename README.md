@@ -6,6 +6,8 @@
 
 ```bash
 docker compose up -d
+# if the rails container exists with an error, check the logs and restart it
+# at the first startup, the database is being initialized and until it's done, rails won't be able to connect to it
 ```
 
 ### Helpful commands
@@ -26,3 +28,7 @@ docker compose exec rails rails db:seed
 # update simulus manifest after adding new controllers manually
 docker compose exec rails rails stimulus:manifest:update
 ```
+
+There is a seed user that use can use to login:
+- email: `john.doe@example.com`
+- password: `John_Doe_1!`

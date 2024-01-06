@@ -51,10 +51,11 @@ ALTER TABLE public.schema_migrations OWNER TO rails;
 
 CREATE TABLE public.users (
     id bigint NOT NULL,
-    username character varying,
-    password_digest character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp(6) without time zone,
+    remember_created_at timestamp(6) without time zone
 );
 
 
@@ -93,7 +94,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
-environment	development	2024-01-06 08:44:47.778895	2024-01-06 08:44:47.778898
+environment	development	2024-01-06 10:25:33.10193	2024-01-06 10:25:33.101933
 \.
 
 
@@ -110,8 +111,8 @@ COPY public.schema_migrations (version) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: rails
 --
 
-COPY public.users (id, username, password_digest, created_at, updated_at) FROM stdin;
-1	john	$2a$12$u3xtOFJ8vVn4xOpO.G8SuOIBAMwEkopfa.P0VTHuqF8WehtSggrb.	2024-01-06 09:29:17.067257	2024-01-06 09:29:17.067257
+COPY public.users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at) FROM stdin;
+1	john.doe@example.com	$2a$12$dYS55qr4XPDy7ENDx8BiL.vlR/UAr9AV5xDfIf6gvKmUJAkYRpMPK	\N	\N	\N
 \.
 
 
@@ -144,6 +145,20 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: rails
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: rails
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
