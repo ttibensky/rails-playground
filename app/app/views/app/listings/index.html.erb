@@ -1,9 +1,17 @@
 <h1>Your Listings</h1>
 
-<ul>
-<% @listings.each do |listing| %>
-    <li>
-        <%= link_to listing.title, app_listings_show_path(id: listing.id) %>
-    </li>
+<%= form_for :listing, url: app_listings_create_path do |f| %>
+  <%= f.label :url, "Add new listing from Airbnb URL:" %>
+  <%= f.text_field :url %>
+  <%= f.submit "Submit" %>
+  <br>
+  <p>example url: https://www.airbnb.com/h/roofdeckhottub</p>
 <% end %>
+
+<ul>
+    <% @listings.each do |listing| %>
+        <li>
+            <%= link_to listing.title, app_listings_show_path(id: listing.id) %>
+        </li>
+    <% end %>
 </ul>

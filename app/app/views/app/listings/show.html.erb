@@ -53,5 +53,8 @@
     list: <%= raw @words %>,
     fontFamily: '',
     backgroundColor: '#ffe0e0',
+    weightFactor: function (size) {
+      return Math.pow(size, 2.3) * 800 / 1024;
+    },
   } );
 </script>

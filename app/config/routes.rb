@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     namespace :listings do
       get '', action: 'index', as: ''
       get ':id', action: 'show', as: 'show'
+      post '', action: 'create', as: 'create'
     end
   end
 end

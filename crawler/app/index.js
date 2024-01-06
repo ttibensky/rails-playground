@@ -117,8 +117,6 @@ app.post("/reviews/airbnb", async (req, res) => {
       }
     );
 
-    console.log(dates);
-
     const reviews = [];
     for (let i = 0; i < authors.length; i++) {
       const review = {};
