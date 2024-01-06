@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   as :user do
     get 'sign_in', to: 'devise/sessions#new'
+    get 'logout', to: 'devise/sessions#destroy'
   end
 
   namespace :app do
