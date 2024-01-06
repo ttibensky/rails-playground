@@ -1,7 +1,57 @@
 <h1><%= @listing.title %></h1>
 
-<canvas
-  data-controller="chart"
-  data-chart-data-value="<%= @chart_data.to_json %>"
-  data-chart-options-value="<%= @chart_options.to_json %>"
-></canvas>
+<div>
+  <canvas id="month-chart" width="800" height="200"></canvas>
+  <canvas id="year-chart" width="800" height="200"></canvas>
+  <canvas id="wordcloud" width="800" height="200"></canvas>
+</div>
+
+<script>
+  const ctxMonth = document.getElementById('month-chart');
+  new Chart(ctxMonth, {
+    type: 'bar',
+    data: {
+      labels: <%= raw @metrics[:month].keys.to_json %>,
+      datasets: [{
+        label: '# of Reviews',
+        data: <%= raw @metrics[:month].values.to_json %>,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  const ctxYear = document.getElementById('year-chart');
+  new Chart(ctxYear, {
+    type: 'bar',
+    data: {
+      labels: <%= raw @metrics[:year].keys.to_json %>,
+      datasets: [{
+        label: '# of Reviews',
+        data: <%= raw @metrics[:year].values.to_json %>,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  WordCloud(document.getElementById('wordcloud'), {
+    list: <%= raw @words %>,
+    fontFamily: '',
+    backgroundColor: '#ffe0e0',
+  } );
+</script>

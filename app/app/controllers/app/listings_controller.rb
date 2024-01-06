@@ -11,6 +11,7 @@ module App
 
       # @TODO cache the metrics below and refresh them each day after we've got new reviews
       @metrics = { month: {}, year: {} }
+      @words = {}
       (@listing.reviews || []).each do |review|
         month = review.created_at.strftime('%Y-%m')
         year = review.created_at.strftime('%Y')
@@ -20,27 +21,15 @@ module App
 
         @metrics[:month][month] += 1
         @metrics[:year][year] += 1
-      end
 
-      @chart_data = {
-        labels: %w[January February March April May June July],
-        datasets: [{
-          label: 'My First dataset',
-          backgroundColor: 'transparent',
-          borderColor: '#3B82F6',
-          data: [37, 83, 78, 54, 12, 5, 99]
-        }]
-      }
-  
-      @chart_options = {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
+        review.text.split do |word|
+          next unless word.length > 3
+
+          @words[word] = [word, 0] unless @words.key?(word)
+          @words[word][1] += 1
+        end
+      end
+      @words = @words.values
     end
   end
 end
