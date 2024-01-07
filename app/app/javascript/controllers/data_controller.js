@@ -14,10 +14,6 @@ export default class extends Controller {
     this.renderWordCloud(data["words"]);
   }
 
-  refresh() {
-    console.log("do something");
-  }
-
   async load() {
     const response = await fetch(this.urlValue);
 

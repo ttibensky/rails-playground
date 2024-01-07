@@ -3,6 +3,7 @@ class FetchReviewsFromAirbnbJob
 
   def perform(listing_id)
     listing = Listing.find(listing_id)
+    # @TODO move the crawler host and port to configuration
     response = RestClient.post 'http://crawler:3000/reviews/airbnb', { url: listing.url }.to_json, { content_type: :json, accept: :json }
     JSON.parse(response).each do |raw_review|
       review = Review.new

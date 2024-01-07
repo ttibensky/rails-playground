@@ -1,5 +1,3 @@
-require 'rest-client'
-
 module App
   class ListingsController < ApplicationController
     before_action :authenticate_user!
