@@ -1,9 +1,8 @@
 <h1><%= @listing.title %></h1>
 
-<div data-controller="data">
-  <p>If you just created this listing, give it a few seconds and hit refresh button below to display the data</p>
-  <p>Sadly, this doesn't work. It seems, the latest Rails version has some issues with Stimulus, so this feature is not yet implemented.</p>
-  <button data-action="click->data#refresh">Refresh</button>
+<div data-controller="data" data-data-url-value="<%= app_listings_reviews_path %>">
+  <p>If you just created this listing, give it a few seconds and hit refresh button below to display the data.</p>
+  <button data-action="click->data#connect">Refresh</button>
 </div>
 
 <div>
@@ -11,56 +10,3 @@
   <canvas id="year-chart" width="800" height="200"></canvas>
   <canvas id="wordcloud" width="800" height="200"></canvas>
 </div>
-
-<script>
-  const ctxMonth = document.getElementById('month-chart');
-  new Chart(ctxMonth, {
-    type: 'bar',
-    data: {
-      labels: <%= raw @metrics[:month].keys.to_json %>,
-      datasets: [{
-        label: '# of Reviews',
-        data: <%= raw @metrics[:month].values.to_json %>,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: false,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-
-  const ctxYear = document.getElementById('year-chart');
-  new Chart(ctxYear, {
-    type: 'bar',
-    data: {
-      labels: <%= raw @metrics[:year].keys.to_json %>,
-      datasets: [{
-        label: '# of Reviews',
-        data: <%= raw @metrics[:year].values.to_json %>,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: false,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-
-  WordCloud(document.getElementById('wordcloud'), {
-    list: <%= raw @words %>,
-    fontFamily: '',
-    backgroundColor: '#ffe0e0',
-    weightFactor: function (size) {
-      return Math.pow(size, 2.3) * 800 / 1024;
-    },
-  } );
-</script>

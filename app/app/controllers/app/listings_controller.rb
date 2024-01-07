@@ -12,7 +12,13 @@ module App
     def show
       # @TODO move logic to a service
       @listing = Listing.find_by(id: params[:id], user: current_user)
-      raise ActionController::RoutingError.new('Not Found') unless !!@listing
+      raise ActionController::RoutingError, 'Not Found' unless !!@listing
+    end
+
+    def reviews
+      # @TODO move logic to a service
+      @listing = Listing.find_by(id: params[:id], user: current_user)
+      raise ActionController::RoutingError, 'Not Found' unless !!@listing
 
       # @TODO cache the metrics below and refresh them each day after we've got new reviews
       # @TODO words rendering will have performance issues when the listing has a large number of reviews
@@ -36,6 +42,11 @@ module App
         end
       end
       @words = @words.values
+
+      render json: {
+        metrics: @metrics,
+        words: @words
+      }
     end
 
     def create
